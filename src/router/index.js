@@ -6,6 +6,7 @@ import Order from '../pages/order/order.vue'
 import Personal from '../pages/personal/personal.vue'
 import Search from '../pages/search/search.vue'
 import Login from '../pages/login/login.vue'
+import Products from '../pages/products/products.vue'
 // 声明使用插件
 Vue.use(VueRouter)
 
@@ -14,7 +15,10 @@ export default new VueRouter({
   routes: [
     {
       path:'/',
-      component: Home
+      component: Home,
+      meta:{
+        showFooter: true
+      }
     },
     {
       path:'/home',
@@ -47,6 +51,10 @@ export default new VueRouter({
     {
       path:'/login',
       component: Login
+    },
+    {
+      path:'/products',
+      component: Products
     }
   ]
 })

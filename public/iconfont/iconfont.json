@@ -1,0 +1,72 @@
+{
+  "id": "1634605",
+  "name": "mypro_vue",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "6941967",
+      "name": "返回",
+      "font_class": "fanhui-",
+      "unicode": "e646",
+      "unicode_decimal": 58950
+    },
+    {
+      "icon_id": "651191",
+      "name": "外卖订单",
+      "font_class": "waimaidingdan0101",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    },
+    {
+      "icon_id": "4251769",
+      "name": "我的",
+      "font_class": "wode",
+      "unicode": "e651",
+      "unicode_decimal": 58961
+    },
+    {
+      "icon_id": "5603492",
+      "name": "美食",
+      "font_class": "meishi",
+      "unicode": "e630",
+      "unicode_decimal": 58928
+    },
+    {
+      "icon_id": "6234270",
+      "name": "搜索",
+      "font_class": "sousuo",
+      "unicode": "e62a",
+      "unicode_decimal": 58922
+    },
+    {
+      "icon_id": "13123282",
+      "name": "外卖订单",
+      "font_class": "waimaidingdan0101-copy",
+      "unicode": "e6f5",
+      "unicode_decimal": 59125
+    },
+    {
+      "icon_id": "13123286",
+      "name": "我的",
+      "font_class": "wode-copy",
+      "unicode": "e6f6",
+      "unicode_decimal": 59126
+    },
+    {
+      "icon_id": "13123288",
+      "name": "美食",
+      "font_class": "meishi-copy",
+      "unicode": "e6f7",
+      "unicode_decimal": 59127
+    },
+    {
+      "icon_id": "13123292",
+      "name": "搜索",
+      "font_class": "sousuo-copy",
+      "unicode": "e6f8",
+      "unicode_decimal": 59128
+    }
+  ]
+}

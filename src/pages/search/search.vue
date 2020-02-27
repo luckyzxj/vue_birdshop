@@ -2,16 +2,40 @@
 <div>
   <mt-header title="搜索"></mt-header>
   <div class="search">
-    <input type="text" placeholder="请输入商家或美食名称">
+    <input v-focus type="text" placeholder="请输入商家或美食名称">
     <input type="submit">
   </div>
+    <p>{{money}}</p>
+    <p>{{money_us}}</p>
+    <button @click="addMoney(100)">加</button>
 </div>
 
 </template>
 
 
 <script>
-  export default {}
+import {mapState,mapGetters,mapMutations,mapActions} from 'vuex'
+import {ADD_MONEY} from '../../store/mutation-types'
+  export default {
+    computed: {
+      ...mapState(["money"]),
+      ...mapGetters(["money_us"])
+    },
+    created(){
+      // var res = this.$store.dispatch("getInfo")
+      var res = this.getInfo()
+      res.then((res)=>{
+        console.log(res)
+      })
+    },
+    methods:{
+      // addMoney(){
+      //   this.$store.commit("addMoney",100)
+      // }
+      ...mapMutations([ADD_MONEY]),
+      ...mapActions(["getInfo"])
+    }
+  }
 
 </script>
   
