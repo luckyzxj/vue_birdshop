@@ -4,13 +4,14 @@
 				<img src="./images/shop/shop_list.png" alt="">
 				<span>附近商家</span>
 			</div>
-			<div class="shop_container" @click="jumpProducts">
-				<ul v-if="this.list.length">
-					<li v-for="(item,i) in list" :key="i">
-						<div class="shop_left">
-							<img src="./images/shop/2.jpg" alt="">
-						</div>
-						<div class="shop_right">
+			<div class="shop_container" @click="goToShop">
+				<ul v-if="shops.length">
+					<li v-for="(item,i) in shops" :key="i">
+						<section>
+							<div class="shop_left">
+								<img src="./images/shop/2.jpg" alt="">
+							</div>
+							<div class="shop_right">
 								<div class="title">
 									<h4 class="shop_name">
 										<span class="brand">品牌</span>
@@ -23,7 +24,8 @@
 									<span class="sold"> 月售 {{item.recent_order_num}} 单</span>
 								</div>
 								<div class="deliver">￥{{item.float_minimum_order_amount}}起送 / {{item.piecewise_agent_fee.tips}}</div>
-						</div>
+							</div>
+						</section>
 						<div class="shop_promise"><span>{{item.delivery_mode.text}}</span></div>
 					</li>
 				</ul>
@@ -37,28 +39,25 @@
 </template>
 
 <script>
-import stars from '../star/stars.vue'
+	import {mapState} from 'vuex'
+
+	import stars from '../star/stars.vue'
   export default{
     data(){
       return{
-				list:[]
+				
       }
 		},
 		components: {
 			stars
 		},
-		created(){
-			this.getShops()
+		computed:{
+			...mapState(['shops'])
 		},
     methods:{
-			getShops(){
-				var url = "http://localhost:3000/shops";
-				this.axios.get(url).then(result=>{
-					this.list=result.data;
-				})
-			},
-			jumpProducts(){
-				this.$router.push('/products');
+			
+			goToShop(){
+				this.$router.push('/shop');
 			}
 		}
   }
@@ -69,7 +68,7 @@ import stars from '../star/stars.vue'
 	padding-left:1rem;
 	padding:1rem 0.8rem 0 0.8rem;
 	margin-top:1rem;
-	border-top:1px solid #ccc
+	border-top:3px solid #efeff4;
 }
 	.shopList .shopList_top img{
 		width:1.5rem;
@@ -79,12 +78,23 @@ import stars from '../star/stars.vue'
 		margin-left:0.5rem;
 		vertical-align: 0.3rem;
 	}
-	.shop_container{
-		padding:0 0.8rem;
-	}
-	.shop_container li{
+	.shop_container li section{
 		display: flex;
 		margin: 1rem 0;
+	}
+	.shop_container li{
+		position: relative;
+		border-bottom: 5px solid #efeff4;
+		border-top: 5px solid #efeff4;
+		padding-left: 0.8rem;
+		border-radius: 20px;
+		margin-bottom: 0.5rem;
+	}
+	.shop_container li:first-child{
+		margin-top: 1rem;
+	}
+	.shop_container ul{
+		width: 100%;
 	}
 	.shop_container .shop_left img{
 		width:5rem;
@@ -95,7 +105,7 @@ import stars from '../star/stars.vue'
 		flex-direction: column;
 		justify-content: space-between;
 		padding: 0.4rem;
-		width: 50%;
+		width: 60%;
 		margin: 0 0.5rem;
 	}
 	.shop_container .shop_name{
@@ -123,8 +133,12 @@ import stars from '../star/stars.vue'
 		font-size: 0.7rem;
 		color: #26A2FF;
 		margin-left: 1.5rem;
+		position: absolute;
+		right: 1rem;
+		bottom: 3rem;
 	}
 	.score{
 		color: #26A2FF;
 	}
+	
 </style>

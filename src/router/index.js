@@ -6,7 +6,10 @@ import Order from '../pages/order/order.vue'
 import Personal from '../pages/personal/personal.vue'
 import Search from '../pages/search/search.vue'
 import Login from '../pages/login/login.vue'
-import Products from '../pages/products/products.vue'
+import Shop from '../pages/shop/shop.vue'
+import ShopGoods from '../pages/shop/shopGoods/shopGoods.vue'
+import ShopRating from '../pages/shop/shopRating/shopRating.vue'
+import ShopInfo from '../pages/shop/shopInfo/shopInfo.vue'
 // 声明使用插件
 Vue.use(VueRouter)
 
@@ -53,8 +56,26 @@ export default new VueRouter({
       component: Login
     },
     {
-      path:'/products',
-      component: Products
+      path:'/shop',
+      component: Shop,
+      children: [
+        {
+          path:'',
+          component: ShopGoods
+        },
+        {
+          path:'/shop/goods',
+          component: ShopGoods
+        },
+        {
+          path:'/shop/rating',
+          component: ShopRating
+        },
+        {
+          path:'/shop/info',
+          component: ShopInfo
+        }
+      ]
     }
   ]
 })

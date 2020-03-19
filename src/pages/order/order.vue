@@ -2,7 +2,7 @@
 <div class="app-order">
   <mt-header title="订单列表"></mt-header>
   <section>
-    <img src="./images/person.png" alt="">
+    <img src="./images/person.png">
     <p>登录后可查看外卖订单</p>
     <mt-button type="primary" @click="jump">立即登录</mt-button>
   </section>

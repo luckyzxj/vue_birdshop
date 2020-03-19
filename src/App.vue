@@ -12,6 +12,10 @@
     name: 'app',
     components:{
       footerNav
+    },
+    mounted(){
+      this.$store.dispatch('getAddress')
+      this.$store.dispatch('getUserInfo')
     }
   }
 

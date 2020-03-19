@@ -34,7 +34,10 @@
               <section class="circle" :class="{show: show_pwd}" @click="showPwd"></section>
             </section>
             
-            <input type="text" placeholder="验证码" v-model="captcha">
+            <section class="picCaptcha">
+              <input type="text" placeholder="验证码" v-model="captcha">
+              <img src="http://localhost:3000/captcha" alt="captcha" @click="getCaptcha" ref="captcha">
+            </section>
             <mt-button type="primary" size="large" style="width: 90%;margin:auto;margin-bottom: 2rem">登录</mt-button>
             <a href="javascript:;">关于我们</a>
           </div>
@@ -46,6 +49,7 @@
 
 <script>
 import { MessageBox } from 'mint-ui'
+import {reqSendCode,reqPwdLogin,reqSmsLogin} from '../../api'
   export default {
     data(){
       return {
@@ -71,18 +75,34 @@ import { MessageBox } from 'mint-ui'
       back(){
         this.$router.back()
       },
-      getCode(){
-        //向指定手机号发送验证码
+        getCaptcha(){
+          //每次指定的src值不一样，触发刷新
+          this.$refs.captcha.src = "http://localhost:3000/captcha?time=" + Date.now()
+        },
+      async getCode(){
+        
         //启动倒计时
         if(!this.computeTime){
           this.computeTime=30;
-          const intervalId=setInterval(() => {
+          this.intervalId=setInterval(() => {
             this.computeTime--
             if(this.computeTime<=0){
-              clearInterval(intervalId)
+              clearInterval(this.intervalId)
             }
           }, 1000)
-          this.phone=this.phone+' '
+          //向指定手机号发送验证码
+          const result = await reqSendCode(this.phone); 
+          if(result.code===1){
+            MessageBox({
+              title: "提示",
+              message: result.msg
+            })
+            // 停止计时
+            if(this.computeTime){
+              this.computeTime = 0
+              clearInterval(this.intervalId)
+            }
+          }
           }
         },
         showPwd(){
@@ -94,8 +114,9 @@ import { MessageBox } from 'mint-ui'
           }
           
         },
-        login(){
+        async login(){
           const {name,captcha,pwd,code,phone,rightPhone,loginWay} = this
+          let result
           if(loginWay){
             //短信登录
             if(!rightPhone){
@@ -104,15 +125,16 @@ import { MessageBox } from 'mint-ui'
                 title: "提示",
                 message: "请输入正确的手机号"
               })
-            }else{
-              if(!/^\d{6}$/.test(code)){
+              return
+            }else if(!/^\d{6}$/.test(code)){
                 // 提示验证码必须六位
                 MessageBox({
                   title: "提示",
                   message: "手机验证码必须六位"
                 })
+                return
               }
-            }
+            result = await reqSmsLogin(phone,code)
           }else{
             //密码登录
             if(!name){
@@ -121,32 +143,53 @@ import { MessageBox } from 'mint-ui'
                   title: "提示",
                   message: "用户名必须指定"
               })
+              return
             }else if(!pwd){
-              if(!pwd){
                 // 提示密码必须指定
                 MessageBox({
                   title: "提示",
                   message: "密码必须指定"
                 })
-              }
-            }else{
-              if(!captcha){
+                return
+            }else if(!captcha){
                 //提示验证码必须指定 
                 MessageBox({
                   title: "提示",
                   message: "验证码必须指定"
                 })
-              }
+                return
             }
+            //发送ajax请求密码登录
+            result = await reqPwdLogin({name,pwd,captcha})
+          }
+          // 停止计时
+          if(this.computeTime){
+            this.computeTime = 0
+            clearInterval(this.intervalId)
+          }
+          // 结果数据处理
+          if(result.code===0){
+            const user = result.data
+            //将user信息保存到vuex的state
+            this.$store.dispatch('receiveUser',user)
+            // 去个人中心界面
+            this.$router.replace('/personal')
+          }else{
+            const msg = result.msg
+            this.getCaptcha()
+            MessageBox({
+              title: '提示',
+              message: msg
+            })
           }
         }
       },
       watch:{
-        computeTime(){
-          if(this.computeTime==0){
-            this.phone=this.phone.slice(0,-1)
-          }
-        },
+        // computeTime(){
+        //   if(this.computeTime==0){
+        //     this.phone=this.phone.slice(0,-1)
+        //   }
+        // },
         show(){
           if(this.show==="password"){
             this.text=''
@@ -261,5 +304,15 @@ import { MessageBox } from 'mint-ui'
   .circle.show{
     right: 2rem;
     background-color:  #fff;
+  }
+  /* 图片验证码部分 */
+  .picCaptcha {
+    position: relative;
+  }
+  .picCaptcha img{
+    display: inline-block;
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
   }
 </style>

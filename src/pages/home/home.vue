@@ -1,77 +1,39 @@
 <template>  
 <div id="app-home">
   <!-- 首页顶部 mint-ui-->
-  <mt-header slot="icon" title="川环南路 妙境一村">
+  <mt-header slot="icon" :title="address.name" fixed>
     <router-link to="/search" slot="left">
       <span class="iconfont iconsousuo" style="font-size: 1.2rem;">
 
 			</span>
     </router-link>
     <span to="/" slot="right">
-      <router-link to="/login" style="color:#fff;">登录 | 注册</router-link>
+      <router-link :to="userInfo._id?'/userInfo':'/login'" style="color:#fff;">
+				<span v-if="!userInfo._id">	登录 | 注册 </span>
+				<i class="iconfont iconwode" v-else></i>
+			</router-link>
     </span>
   </mt-header>
   <!--mint-ui的轮播 组合 mui的九宫格 更改flex布局col 一行4个-->
-  <mt-swipe :auto="0" >
+  <mt-swipe :auto="0" style="margin-top:2.5rem">
     <mt-swipe-item>
       <div class="mui-content">
 				<ul class="mui-table-view mui-grid-view mui-grid-9">
-						<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
-										<img src="../../common/img/nav/2.jpg" alt="" width=45px>
-										<div class="mui-media-body">蔬菜水果</div></a></li>
-						<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
-										<img src="../../common/img/nav/1.jpg" alt="" width=45px>
-										<div class="mui-media-body">新店特惠</div></a></li>
-						<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
-										<img src="../../common/img/nav/3.jpg" alt="" width=45px>
-										<div class="mui-media-body">医药</div></a></li>
-						<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
-										<img src="../../common/img/nav/4.jpg" alt="" width=45px>
-										<div class="mui-media-body">准时达</div></a></li>
-						<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
-										<img src="../../common/img/nav/5.jpg" alt="" width=45px>
-										<div class="mui-media-body">商超便利</div></a></li>
-						<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
-										<img src="../../common/img/nav/6.jpg" alt="" width=45px>
-										<div class="mui-media-body">美食</div></a></li>
-						<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
-										<img src="../../common/img/nav/7.jpg" alt="" width=45px>
-										<div class="mui-media-body">甜品饮品</div></a></li>
-						<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
-										<img src="../../common/img/nav/8.jpg" alt="" width=45px>
-										<div class="mui-media-body">麻辣烫</div></a></li>
+						<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3" v-for="(category,i) in categorys1" :key="i">
+								<img :src="baseImageUrl+category.image_url" alt="" width=45px>
+								<div class="mui-media-body">{{category.title}}</div>
+						</li>
 					
 				</ul> 
 		  </div>
     </mt-swipe-item>
     <mt-swipe-item>
       <div class="mui-content">
-		    <ul class="mui-table-view mui-grid-view mui-grid-9">
-						<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
-										<img src="../../common/img/nav/2.jpg" alt="" width=45px>
-										<div class="mui-media-body">蔬菜水果</div></a></li>
-						<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
-										<img src="../../common/img/nav/1.jpg" alt="" width=45px>
-										<div class="mui-media-body">新店特惠</div></a></li>
-						<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
-										<img src="../../common/img/nav/3.jpg" alt="" width=45px>
-										<div class="mui-media-body">医药</div></a></li>
-						<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
-										<img src="../../common/img/nav/4.jpg" alt="" width=45px>
-										<div class="mui-media-body">准时达</div></a></li>
-						<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
-										<img src="../../common/img/nav/5.jpg" alt="" width=45px>
-										<div class="mui-media-body">商超便利</div></a></li>
-						<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
-										<img src="../../common/img/nav/6.jpg" alt="" width=45px>
-										<div class="mui-media-body">美食</div></a></li>
-						<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
-										<img src="../../common/img/nav/7.jpg" alt="" width=45px>
-										<div class="mui-media-body">甜品饮品</div></a></li>
-						<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
-										<img src="../../common/img/nav/8.jpg" alt="" width=45px>
-										<div class="mui-media-body">麻辣烫</div></a></li>
-					
+		   	<ul class="mui-table-view mui-grid-view mui-grid-9">
+						<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3" v-for="(category,i) in categorys2" :key="i">
+								<img :src="baseImageUrl+category.image_url" alt="" width=45px>
+								<div class="mui-media-body">{{category.title}}</div>
+						</li>
 				</ul> 
 		  </div>
     </mt-swipe-item>
@@ -83,21 +45,26 @@
 
 
 <script>
+	import {mapState} from 'vuex'
 	import shopList from '../../components/shopList/shopList.vue'
   export default {
+		data(){
+			return {
+				baseImageUrl: 'https://fuss10.elemecdn.com'
+			}
+		},
 		components: {
 			shopList
 		},
-		created(){
-			this.getShops()
+		computed:{
+			...mapState(['address','userInfo','categorys1','categorys2'])
+		},
+		mounted(){
+			this.$store.dispatch('getShops')
+			this.$store.dispatch('getFoodCategorys')
 		},
     methods:{
-			getShops(){
-				var url = "http://localhost:3000/shops";
-				this.axios.get(url).then(result=>{
-					console.log(result);
-				})
-			}
+			
 		}
 	}
 
